@@ -38,6 +38,7 @@ class MovieSerializer(serializers.Serializer):
         instance.save()
 
         if 'director' in validated_data:
-            instance.director.set(validated_data.get('director'))
+            instance.director.set(validated_data['director']) # OR instance.director.set(validated_data.get('director'))
+            
 
         return instance
