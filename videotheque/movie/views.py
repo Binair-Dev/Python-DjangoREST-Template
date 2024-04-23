@@ -41,6 +41,15 @@ def director_detail_view(request, id):
         
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+    if request.method == 'PATCH':
+        data = JSONParser().parse(request)
+        serializer = DirectorSerializer(director, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
     if request.method == 'DELETE':
         director.delete()
         return HttpResponse(status=status.HTTP_204_NO_CONTENT)
