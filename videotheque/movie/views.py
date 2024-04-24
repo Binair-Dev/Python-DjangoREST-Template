@@ -24,7 +24,7 @@ class DirectorDetail(APIView):
         try:
             return Director.objects.get(id=id)
         except Director.DoesNotExist:
-            raise NotFound(status.HTTP_404_NOT_FOUND)
+            raise NotFound(detail="Le réalisateur avec l'id {} n'existe pas".format(id))
     
     def get(self, request, id):
         director = self.get_object(id)
@@ -71,7 +71,7 @@ class MovieDetail(APIView):
         try:
             return Movie.objects.get(id=id)
         except Movie.DoesNotExist:
-            raise NotFound(status.HTTP_404_NOT_FOUND)
+            raise NotFound(detail="Le film avec l'id {} n'existe pas".format(id))
     
     def get(self, request, id):
         movie = self.get_object(id)
