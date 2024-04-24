@@ -4,11 +4,14 @@ from rest_framework.views import APIView
 from .models import Director, Movie
 from .serializers import DirectorSerializer, MovieSerializer
 from rest_framework.exceptions import NotFound
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 #Create your views here.
 #API VIEW Template
 class DirectorList(APIView):
     def get(self, request):
+        # if not request.user.is_authenticated:
+        #     return Response(status=status.HTTP_401_UNAUTHORIZED) #Si on veut protéger le get des utilisateurs non authentifiés
         directors = Director.objects.all()
         serializer = DirectorSerializer(directors, many=True)
         return Response(serializer.data)
@@ -20,6 +23,7 @@ class DirectorList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     
 class DirectorDetail(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly] #Si on veut protéger le requetes des utilisateurs non authentifiés
     def get_object(self, id):
         try:
             return Director.objects.get(id=id)
@@ -67,6 +71,7 @@ class MovieList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     
 class MovieDetail(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly] #Si on veut protéger le requetes des utilisateurs non authentifiés
     def get_object(self, id):
         try:
             return Movie.objects.get(id=id)
