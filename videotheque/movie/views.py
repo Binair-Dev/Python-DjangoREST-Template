@@ -1,42 +1,37 @@
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt 
-from rest_framework.parsers import JSONParser
 from rest_framework import status
-from .models import *
-from .serializers import *
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from .models import Director, Movie
+from .serializers import DirectorSerializer, MovieSerializer
 
 #Create your views here.
 #API VIEW Template
-@csrf_exempt 
-@api_view(['GET', 'POST'])
-def director_list_view(request):
-    if request.method == 'GET':
+class DirectorList(APIView):
+    def get(self, request):
         directors = Director.objects.all()
         serializer = DirectorSerializer(directors, many=True)
         return Response(serializer.data)
 
-    elif request.method == 'POST':
+    def post(self, request):
         serializer = DirectorSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     
-@csrf_exempt
-@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
-def director_detail_view(request, id):
-    try:
-        director = Director.objects.get(id=id)
-    except Director.DoesNotExist:
-        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+class DirectorDetail(APIView):
+    def get_object(self, id):
+        try:
+            return Director.objects.get(id=id)
+        except Director.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
     
-    if request.method == 'GET':
+    def get(self, request, id):
+        director = self.get_object(id)
         serializer = DirectorSerializer(director)
         return Response(serializer.data)
 
-    if request.method == 'PUT':
+    def put(self, request, id):
+        director = self.get_object(id)
         serializer = DirectorSerializer(director, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -44,7 +39,8 @@ def director_detail_view(request, id):
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    if request.method == 'PATCH':
+    def patch(self, request, id):
+        director = self.get_object(id)
         serializer = DirectorSerializer(director, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -52,44 +48,45 @@ def director_detail_view(request, id):
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    if request.method == 'DELETE':
+    def delete(self, request, id):
+        director = self.get_object(id)
         director.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-@csrf_exempt 
-@api_view(['GET', 'POST'])
-def movie_list_view(request):
-    if request.method == 'GET':
+class MovieList(APIView):
+    def get(self, request):
         movies = Movie.objects.all()
         serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data)
 
-    elif request.method == 'POST':
+    def post(self, request):
         serializer = MovieSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     
-@csrf_exempt
-@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
-def movie_details_view(request, id):
-    try:
-        movie = Movie.objects.get(id=id)
-    except Movie.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+class MovieDetail(APIView):
+    def get_object(self, id):
+        try:
+            return Movie.objects.get(id=id)
+        except Movie.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
     
-    if request.method == 'GET':
+    def get(self, request, id):
+        movie = self.get_object(id)
         serializer = MovieSerializer(movie)
         return Response(serializer.data)
 
-    if request.method == 'PUT':
+    def put(self, request, id):
+        movie = self.get_object(id)
         serializer = MovieSerializer(movie, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    if request.method == 'PATCH':
+    def patch(self, request, id):
+        movie = self.get_object(id)
         serializer = MovieSerializer(movie, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -97,7 +94,8 @@ def movie_details_view(request, id):
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    if request.method == 'DELETE':
+    def delete(self, request, id):
+        movie = self.get_object(id)
         movie.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
