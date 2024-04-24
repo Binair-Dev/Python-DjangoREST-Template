@@ -13,11 +13,11 @@ class DirectorList(APIView):
         # if not request.user.is_authenticated:
         #     return Response(status=status.HTTP_401_UNAUTHORIZED) #Si on veut protéger le get des utilisateurs non authentifiés
         directors = Director.objects.all()
-        serializer = DirectorSerializer(directors, many=True)
+        serializer = DirectorSerializer(directors, many=True, context={'request': request})
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = DirectorSerializer(data=request.data)
+        serializer = DirectorSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -32,12 +32,12 @@ class DirectorDetail(APIView):
     
     def get(self, request, id):
         director = self.get_object(id)
-        serializer = DirectorSerializer(director)
+        serializer = DirectorSerializer(director, context={'request': request})
         return Response(serializer.data)
 
     def put(self, request, id):
         director = self.get_object(id)
-        serializer = DirectorSerializer(director, data=request.data)
+        serializer = DirectorSerializer(director, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -46,7 +46,7 @@ class DirectorDetail(APIView):
     
     def patch(self, request, id):
         director = self.get_object(id)
-        serializer = DirectorSerializer(director, data=request.data, partial=True)
+        serializer = DirectorSerializer(director, data=request.data, partial=True, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -61,11 +61,11 @@ class DirectorDetail(APIView):
 class MovieList(APIView):
     def get(self, request):
         movies = Movie.objects.all()
-        serializer = MovieSerializer(movies, many=True)
+        serializer = MovieSerializer(movies, many=True, context={'request': request})
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = MovieSerializer(data=request.data)
+        serializer = MovieSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -80,12 +80,12 @@ class MovieDetail(APIView):
     
     def get(self, request, id):
         movie = self.get_object(id)
-        serializer = MovieSerializer(movie)
+        serializer = MovieSerializer(movie, context={'request': request})
         return Response(serializer.data)
 
     def put(self, request, id):
         movie = self.get_object(id)
-        serializer = MovieSerializer(movie, data=request.data)
+        serializer = MovieSerializer(movie, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -93,7 +93,7 @@ class MovieDetail(APIView):
     
     def patch(self, request, id):
         movie = self.get_object(id)
-        serializer = MovieSerializer(movie, data=request.data, partial=True)
+        serializer = MovieSerializer(movie, data=request.data, partial=True, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

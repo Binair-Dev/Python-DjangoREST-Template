@@ -1,25 +1,22 @@
 from rest_framework import serializers
 from .models import Movie, Director
 
-class DirectorSerializer(serializers.ModelSerializer):
+class DirectorSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Director
         fields = ['id', 'first_name', 'last_name', 'nationality'] #OR '__all__'
 
-class MovieSerializer(serializers.ModelSerializer):
+class MovieSerializer(serializers.HyperlinkedModelSerializer):
     director_id = serializers.PrimaryKeyRelatedField(
         many=True, 
         queryset=Director.objects.all(),
         write_only=True,
         source='director') #Pour le post, envoyer l'id des réalisateurs
     
-    director = DirectorSerializer(
-        many=True, 
-        read_only=True) #Pour l'affichage, afficher les données des réalisateurs complets
-
     class Meta:
         model = Movie
-        fields = ['id', 'title', 'release_date', 'director', 'director_id', 'identification_number'] #OR '__all__'
+        fields = ['id', 'title', 'release_date', 'director_id', 'identification_number', 'director'] #OR '__all__'
+        extra_kwargs = {'director': {'view_name': 'director-detail', 'lookup_field': 'id', 'read_only': True}}
 
 #Manuellement: 
 # class DirectorSerializer(serializers.Serializer):
