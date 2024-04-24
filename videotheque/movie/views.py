@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Director, Movie
 from .serializers import DirectorSerializer, MovieSerializer
+from rest_framework.exceptions import NotFound
 
 #Create your views here.
 #API VIEW Template
@@ -23,7 +24,7 @@ class DirectorDetail(APIView):
         try:
             return Director.objects.get(id=id)
         except Director.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            raise NotFound(status.HTTP_404_NOT_FOUND)
     
     def get(self, request, id):
         director = self.get_object(id)
@@ -70,7 +71,7 @@ class MovieDetail(APIView):
         try:
             return Movie.objects.get(id=id)
         except Movie.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            raise NotFound(status.HTTP_404_NOT_FOUND)
     
     def get(self, request, id):
         movie = self.get_object(id)
