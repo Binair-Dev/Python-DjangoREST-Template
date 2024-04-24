@@ -7,11 +7,19 @@ class DirectorSerializer(serializers.ModelSerializer):
         fields = ['id', 'first_name', 'last_name', 'nationality'] #OR '__all__'
 
 class MovieSerializer(serializers.ModelSerializer):
-    director = serializers.PrimaryKeyRelatedField(many=True, queryset=Director.objects.all())
+    director_id = serializers.PrimaryKeyRelatedField(
+        many=True, 
+        queryset=Director.objects.all(),
+        write_only=True,
+        source='director') #Pour le post, envoyer l'id des réalisateurs
+    
+    director = DirectorSerializer(
+        many=True, 
+        read_only=True) #Pour l'affichage, afficher les données des réalisateurs complets
 
     class Meta:
         model = Movie
-        fields = ['id', 'title', 'release_date', 'director', 'identification_number'] #OR '__all__'
+        fields = ['id', 'title', 'release_date', 'director', 'director_id', 'identification_number'] #OR '__all__'
 
 #Manuellement: 
 # class DirectorSerializer(serializers.Serializer):
