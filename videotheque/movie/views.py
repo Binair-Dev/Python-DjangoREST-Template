@@ -2,17 +2,24 @@ from .models import Director, Movie
 from .serializers import DirectorSerializer, MovieSerializer
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from django_filters.rest_framework import DjangoFilterBackend
+
 
 #Create your views here.
 class DirectorViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly] #Si on veut protéger le requetes des utilisateurs non authentifiés
     queryset = Director.objects.all()
     serializer_class = DirectorSerializer
+    
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['first_name', 'last_name', 'nationality']
 
 class MovieViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly] #Si on veut protéger le requetes des utilisateurs non authentifiés
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['title', 'release_date', 'identification_number']
 
 
 # class DirectorDetail(viewsets.RetrieveUpdateDestroyAPIView):
