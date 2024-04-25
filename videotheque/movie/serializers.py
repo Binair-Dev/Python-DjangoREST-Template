@@ -13,10 +13,16 @@ class MovieSerializer(serializers.HyperlinkedModelSerializer):
         write_only=True,
         source='director') #Pour le post, envoyer l'id des réalisateurs
     
+    director = serializers.HyperlinkedIdentityField(
+        many=True,
+        read_only=True,
+        view_name='director-detail',
+    )
+    
     class Meta:
         model = Movie
         fields = ['id', 'title', 'release_date', 'director_id', 'identification_number', 'director'] #OR '__all__'
-        extra_kwargs = {'director': {'view_name': 'director-detail', 'lookup_field': 'pk', 'read_only': True}}
+        #extra_kwargs = {'director': {'view_name': 'director-detail', 'lookup_field': 'pk', 'read_only': True}} #Alternative
 
 #Manuellement: 
 # class DirectorSerializer(serializers.Serializer):
