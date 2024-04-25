@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 #Create your views here.
 class DirectorList(generic.ListCreateAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly] #Si on veut protéger le requetes des utilisateurs non authentifiés
     queryset = Director.objects.all()
     serializer_class = DirectorSerializer
 
@@ -14,6 +15,7 @@ class DirectorDetail(generic.RetrieveUpdateDestroyAPIView):
     serializer_class = DirectorSerializer
 
 class MovieList(generic.ListCreateAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly] #Si on veut protéger le requetes des utilisateurs non authentifiés
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
