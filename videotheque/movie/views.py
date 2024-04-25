@@ -1,10 +1,5 @@
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
 from .models import Director, Movie
 from .serializers import DirectorSerializer, MovieSerializer
-from rest_framework.exceptions import NotFound
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import generics as generic
 
 #Create your views here.
