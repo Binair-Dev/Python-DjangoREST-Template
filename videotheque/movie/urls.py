@@ -31,6 +31,10 @@ movie_detail = MovieViewset.as_view({
     'delete': 'destroy'
 })
 
+movie_custom_delete = MovieViewset.as_view({
+    'delete': 'custom_delete'
+})
+
 urlpatterns = [
     #path('', include(router.urls))
     path('directors/', director_list, name='director-list'),
@@ -38,4 +42,5 @@ urlpatterns = [
 
     path('movies/', movie_list, name='movie-list'),
     path('movies/<int:pk>/', movie_detail, name='movie-detail'),
+    path('movies/<int:pk>/delete/', movie_custom_delete, name='movie-custom-delete'),
 ]
