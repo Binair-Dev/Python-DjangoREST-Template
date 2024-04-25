@@ -5,105 +5,122 @@ from .models import Director, Movie
 from .serializers import DirectorSerializer, MovieSerializer
 from rest_framework.exceptions import NotFound
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework import generics as generic
 
 #Create your views here.
+class DirectorList(generic.ListCreateAPIView):
+    queryset = Director.objects.all()
+    serializer_class = DirectorSerializer
+
+class DirectorDetail(generic.RetrieveUpdateDestroyAPIView):
+    queryset = Director.objects.all()
+    serializer_class = DirectorSerializer
+
+class MovieList(generic.ListCreateAPIView):
+    queryset = Director.objects.all()
+    serializer_class = DirectorSerializer
+
+class MovieDetail(generic.RetrieveUpdateDestroyAPIView):
+    queryset = Director.objects.all()
+    serializer_class = DirectorSerializer
+
 #API VIEW Template
-class DirectorList(APIView):
-    def get(self, request):
-        # if not request.user.is_authenticated:
-        #     return Response(status=status.HTTP_401_UNAUTHORIZED) #Si on veut protéger le get des utilisateurs non authentifiés
-        directors = Director.objects.all()
-        serializer = DirectorSerializer(directors, many=True, context={'request': request})
-        return Response(serializer.data)
+# class DirectorList(APIView):
+#     def get(self, request):
+#         # if not request.user.is_authenticated:
+#         #     return Response(status=status.HTTP_401_UNAUTHORIZED) #Si on veut protéger le get des utilisateurs non authentifiés
+#         directors = Director.objects.all()
+#         serializer = DirectorSerializer(directors, many=True, context={'request': request})
+#         return Response(serializer.data)
 
-    def post(self, request):
-        serializer = DirectorSerializer(data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+#     def post(self, request):
+#         serializer = DirectorSerializer(data=request.data, context={'request': request})
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
     
-class DirectorDetail(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly] #Si on veut protéger le requetes des utilisateurs non authentifiés
-    def get_object(self, id):
-        try:
-            return Director.objects.get(id=id)
-        except Director.DoesNotExist:
-            raise NotFound(detail="Le réalisateur avec l'id {} n'existe pas".format(id))
+# class DirectorDetail(APIView):
+#     permission_classes = [IsAuthenticatedOrReadOnly] #Si on veut protéger le requetes des utilisateurs non authentifiés
+#     def get_object(self, id):
+#         try:
+#             return Director.objects.get(id=id)
+#         except Director.DoesNotExist:
+#             raise NotFound(detail="Le réalisateur avec l'id {} n'existe pas".format(id))
     
-    def get(self, request, id):
-        director = self.get_object(id)
-        serializer = DirectorSerializer(director, context={'request': request})
-        return Response(serializer.data)
+#     def get(self, request, id):
+#         director = self.get_object(id)
+#         serializer = DirectorSerializer(director, context={'request': request})
+#         return Response(serializer.data)
 
-    def put(self, request, id):
-        director = self.get_object(id)
-        serializer = DirectorSerializer(director, data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
+#     def put(self, request, id):
+#         director = self.get_object(id)
+#         serializer = DirectorSerializer(director, data=request.data, context={'request': request})
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
         
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    def patch(self, request, id):
-        director = self.get_object(id)
-        serializer = DirectorSerializer(director, data=request.data, partial=True, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
+#     def patch(self, request, id):
+#         director = self.get_object(id)
+#         serializer = DirectorSerializer(director, data=request.data, partial=True, context={'request': request})
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
         
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    def delete(self, request, id):
-        director = self.get_object(id)
-        director.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+#     def delete(self, request, id):
+#         director = self.get_object(id)
+#         director.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
     
-class MovieList(APIView):
-    def get(self, request):
-        movies = Movie.objects.all()
-        serializer = MovieSerializer(movies, many=True, context={'request': request})
-        return Response(serializer.data)
+# class MovieList(APIView):
+#     def get(self, request):
+#         movies = Movie.objects.all()
+#         serializer = MovieSerializer(movies, many=True, context={'request': request})
+#         return Response(serializer.data)
 
-    def post(self, request):
-        serializer = MovieSerializer(data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+#     def post(self, request):
+#         serializer = MovieSerializer(data=request.data, context={'request': request})
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
     
-class MovieDetail(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly] #Si on veut protéger le requetes des utilisateurs non authentifiés
-    def get_object(self, id):
-        try:
-            return Movie.objects.get(id=id)
-        except Movie.DoesNotExist:
-            raise NotFound(detail="Le film avec l'id {} n'existe pas".format(id))
+# class MovieDetail(APIView):
+#     permission_classes = [IsAuthenticatedOrReadOnly] #Si on veut protéger le requetes des utilisateurs non authentifiés
+#     def get_object(self, id):
+#         try:
+#             return Movie.objects.get(id=id)
+#         except Movie.DoesNotExist:
+#             raise NotFound(detail="Le film avec l'id {} n'existe pas".format(id))
     
-    def get(self, request, id):
-        movie = self.get_object(id)
-        serializer = MovieSerializer(movie, context={'request': request})
-        return Response(serializer.data)
+#     def get(self, request, id):
+#         movie = self.get_object(id)
+#         serializer = MovieSerializer(movie, context={'request': request})
+#         return Response(serializer.data)
 
-    def put(self, request, id):
-        movie = self.get_object(id)
-        serializer = MovieSerializer(movie, data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     def put(self, request, id):
+#         movie = self.get_object(id)
+#         serializer = MovieSerializer(movie, data=request.data, context={'request': request})
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    def patch(self, request, id):
-        movie = self.get_object(id)
-        serializer = MovieSerializer(movie, data=request.data, partial=True, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
+#     def patch(self, request, id):
+#         movie = self.get_object(id)
+#         serializer = MovieSerializer(movie, data=request.data, partial=True, context={'request': request})
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
         
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    def delete(self, request, id):
-        movie = self.get_object(id)
-        movie.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+#     def delete(self, request, id):
+#         movie = self.get_object(id)
+#         movie.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
     
 
 #BASIC Template
