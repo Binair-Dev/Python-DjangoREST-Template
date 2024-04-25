@@ -1,28 +1,29 @@
 from .models import Director, Movie
 from .serializers import DirectorSerializer, MovieSerializer
-from rest_framework import generics as generic
+from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 #Create your views here.
-class DirectorList(generic.ListCreateAPIView):
+class DirectorViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly] #Si on veut protéger le requetes des utilisateurs non authentifiés
     queryset = Director.objects.all()
     serializer_class = DirectorSerializer
 
-class DirectorDetail(generic.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticatedOrReadOnly] #Si on veut protéger le requetes des utilisateurs non authentifiés
-    queryset = Director.objects.all()
-    serializer_class = DirectorSerializer
-
-class MovieList(generic.ListCreateAPIView):
+class MovieViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly] #Si on veut protéger le requetes des utilisateurs non authentifiés
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
-class MovieDetail(generic.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticatedOrReadOnly] #Si on veut protéger le requetes des utilisateurs non authentifiés
-    queryset = Movie.objects.all()
-    serializer_class = MovieSerializer
+
+# class DirectorDetail(viewsets.RetrieveUpdateDestroyAPIView):
+#     permission_classes = [IsAuthenticatedOrReadOnly] #Si on veut protéger le requetes des utilisateurs non authentifiés
+#     queryset = Director.objects.all()
+#     serializer_class = DirectorSerializer
+
+# class MovieDetail(viewsets.RetrieveUpdateDestroyAPIView):
+#     permission_classes = [IsAuthenticatedOrReadOnly] #Si on veut protéger le requetes des utilisateurs non authentifiés
+#     queryset = Movie.objects.all()
+#     serializer_class = MovieSerializer
 
 #API VIEW Template
 # class DirectorList(APIView):

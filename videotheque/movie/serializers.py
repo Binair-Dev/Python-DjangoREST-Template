@@ -4,7 +4,7 @@ from .models import Movie, Director
 class DirectorSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Director
-        fields = ['id', 'first_name', 'last_name', 'nationality'] #OR '__all__'
+        fields = '__all__'
 
 class MovieSerializer(serializers.HyperlinkedModelSerializer):
     director_id = serializers.PrimaryKeyRelatedField(
@@ -21,7 +21,7 @@ class MovieSerializer(serializers.HyperlinkedModelSerializer):
     
     class Meta:
         model = Movie
-        fields = ['id', 'title', 'release_date', 'director_id', 'identification_number', 'director'] #OR '__all__'
+        fields = ['url', 'id', 'title', 'release_date', 'director_id', 'identification_number', 'director'] #OR '__all__'
         #extra_kwargs = {'director': {'view_name': 'director-detail', 'lookup_field': 'pk', 'read_only': True}} #Alternative
 
 #Manuellement: 
