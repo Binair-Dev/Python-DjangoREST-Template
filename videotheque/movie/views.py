@@ -17,12 +17,12 @@ class DirectorDetail(generic.RetrieveUpdateDestroyAPIView):
     serializer_class = DirectorSerializer
 
 class MovieList(generic.ListCreateAPIView):
-    queryset = Director.objects.all()
-    serializer_class = DirectorSerializer
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
 
 class MovieDetail(generic.RetrieveUpdateDestroyAPIView):
-    queryset = Director.objects.all()
-    serializer_class = DirectorSerializer
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
 
 #API VIEW Template
 # class DirectorList(APIView):

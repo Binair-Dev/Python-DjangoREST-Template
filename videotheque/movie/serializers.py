@@ -16,7 +16,7 @@ class MovieSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Movie
         fields = ['id', 'title', 'release_date', 'director_id', 'identification_number', 'director'] #OR '__all__'
-        extra_kwargs = {'director': {'view_name': 'director-detail', 'lookup_field': 'id', 'read_only': True}}
+        extra_kwargs = {'director': {'view_name': 'director-detail', 'lookup_field': 'pk', 'read_only': True}}
 
 #Manuellement: 
 # class DirectorSerializer(serializers.Serializer):
